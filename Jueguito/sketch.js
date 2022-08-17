@@ -36,15 +36,12 @@ function setup() {
 
 function Changedirection(target)
 { 
-  a = 0;
+var value, countdown;
 if (hard === 1){
   value = null;
 }
 var number = 10;
-if (a = 0){
-  value = 5
-  a = 1;
-}
+
 if (frameCount % 30 === 0){
   countdown = countdown - 1;
 }
@@ -124,7 +121,7 @@ function draw()
 {
 background("#323232");
 fill("white");
-ellipse(ball.x, ball.y, 25, 25);
+
 
 
 
@@ -150,14 +147,25 @@ if (ball.x > 1541 || ball.x < -21 || ball.y > 762 || ball.y < -21) {
 ////tp de wall3 fuera de pantalla en Y
 if (gameState === 1){ 
   textSize(15); 
+  text("score: "+ score, 20, 25);
+  ellipse(ball.x, ball.y, 25, 25);
   score = Math.round(frameCount/600);  
+
   if (simple === 1 ){
   ball.velocityX = 3;
   ball.velocityY = -3;
   simple = 2;
+  } else if (normal === 1){
+  ball.velocityX = 3;
+  ball.velocityY = -3;
+  Changedirection(ball);
+  } else if (hard === 1) {
+  ball.velocityX = 5;
+  ball.velocityY = -5;
+  Changedirection(ball);
   }
 
-  Changedirection(ball);
+  
   if (wall.y < 816 & wall.y > -75 & wall.x < 1595 & wall.x > -75){
     ball.bounceOff(wall);
     }
@@ -424,9 +432,12 @@ if (wall.y < 816 || wall.y > -75){
     gameState = 0;
   }
 } else if (gameState === 0){
+  textSize(30);
+  text("Hi, select your gamemode", 40, 40);
   score = 0;
-  screen.shapeColor = 150,150,105;
-  screen.depth = 2;  
+  screen.shapeColor = 110,110,110;
+  //screen.depth = 2;  
+  
   if (keyWentUp(49)){
    gameState = .5;
    simple = 1;
@@ -442,7 +453,7 @@ if (wall.y < 816 || wall.y > -75){
 } else if (gameState === .5) {
   screen.depth = 0;
   screen.shapeColor = "#323232";
-  text("score: "+ score, 20, 25);
+  
   if (keyWentUp(13)){
     gameState = 1;
   }
