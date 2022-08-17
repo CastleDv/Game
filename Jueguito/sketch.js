@@ -1,5 +1,5 @@
 var ball;
-var wall, screen; 
+var wall; 
 var simple, normal, hard;
 function setup() {
   createCanvas(1520,741);
@@ -8,7 +8,7 @@ function setup() {
   wall = createSprite(600, 600, 10, 150);
   wall2 = createSprite(600, -141, 10, 150);
   wall3 = createSprite(-920, 600, 10, 150);
-  screen =  createSprite(760,370,1520,741);
+
 
   gameState = 0;
   score = 0;
@@ -24,11 +24,10 @@ function setup() {
   wall2.debug = true;
   
   ball.setCollider("circle", 0, 0, 13)
-  ball.debug = true;
+  
   ellipseMode(RADIUS);
   edges = createEdgeSprites();
-  ball.velocityX = 0;
-  ball.velocityY = 0;
+  
   frameRate(30);
 
 }
@@ -37,9 +36,7 @@ function setup() {
 function Changedirection(target)
 { 
 var value, countdown;
-if (hard === 1){
-  value = null;
-}
+
 var number = 10;
 
 if (frameCount % 30 === 0){
@@ -52,7 +49,7 @@ value = rand;
 number = 10;
 countdown = number;
 }
-
+if (normal === 2){
 if (value === 1){
  text("ball will go up and left in... "+ countdown, 200, 25);
 } else if (value === 2){
@@ -64,7 +61,8 @@ if (value === 1){
 } else if (value === null || rand === undefined) {
  text("good luck :D", 200, 25);
 }
-if (normal === 1){
+}
+if (normal === 2){
  if (frameCount % 300 === 0){
   console.log("hi >;D");
   if (value === 1){
@@ -88,7 +86,8 @@ if (normal === 1){
     target.velocityY = target.velocityY*-1;
   }
  } 
-} else if (hard === 1){
+} else if (hard === 2){
+  text("good luck :D", 200, 25);
   if (frameCount % 150 === 0){
     console.log("hi >;D");
     if (value === 1){
@@ -122,17 +121,15 @@ function draw()
 background("#323232");
 fill("white");
 
-
-
-
-ball.bounciness = 1.01;
+console.log("simple "+simple)
+console.log("normal "+normal)
+console.log("hard "+hard)
 
 //console.log ("wall1.y"+wall.y)
 //console.log ("wall3.y"+wall3.y);
-if (ball.x > 1541 || ball.x < -21 || ball.y > 762 || ball.y < -21) {
-  gameState = 2;
-}
 
+ball.velocityX = 0;
+  ball.velocityY = 0;
 
 //75 =antes del fuera del canvas relativo a la mitad de la altura/ancho de wall, misma situacion con -75
 //816 = altura del canvas (716) + wall(150) de la parte de arriba
@@ -155,15 +152,29 @@ if (gameState === 1){
   ball.velocityX = 3;
   ball.velocityY = -3;
   simple = 2;
-  } else if (normal === 1){
-  ball.velocityX = 3;
-  ball.velocityY = -3;
+  } 
+  if (normal === 1){
+  ball.velocityX = 4;
+  ball.velocityY = -4;
   Changedirection(ball);
-  } else if (hard === 1) {
+  ball.bounciness = 1.05;
+  normal = 2;
+  }
+  if (hard === 1) {
   ball.velocityX = 5;
   ball.velocityY = -5;
   Changedirection(ball);
+  hard = 2;
   }
+  if (simple === 2 ){
+    ball.bounciness = 1.05;
+    } 
+  if (normal === 2){
+    ball.bounciness = 1.07;
+    } 
+  if (hard === 2) {
+    ball.bounciness = 1.1;
+    }
 
   
   if (wall.y < 816 & wall.y > -75 & wall.x < 1595 & wall.x > -75){
@@ -178,22 +189,22 @@ if (gameState === 1){
   //tp de wall3 en Y relacionado con wall
   if (wall.y < 75 & wall3.y < -75 ){
   wall3.y = 816;
-  wall3.x = wall.x;
+  //wall3.x = wall.x;
   }
   //tp de wall3 en Y relacionado con wall
   if (wall.y > 666 & wall3.y > 816){
   wall3.y = -75;
-  wall3.x = wall.x;
+  //wall3.x = wall.x;
   }
   //tp de wall3 en Y relacionado con wall2
   if (wall2.y < 75 & wall3.y < -75){
   wall3.y = 816;
-  wall3.x = wall2.x;
+  //wall3.x = wall2.x;
   }
   //tp de wall3 en Y relacionado con wall2
   if (wall2.y > 666 & wall3.y > 816){
   wall3.y = -75;
-  wall3.x = wall2.x;
+  //wall3.x = wall2.x;
   }
 
 ////tp de wall2 fuera de pantalla en Y (default spawn)
@@ -201,22 +212,22 @@ if (gameState === 1){
   //tp de wall2 en Y relacionado con wall
   if (wall.y < 75 & wall2.y < -75 ){
   wall2.y = 816;
-  wall2.x = wall.x;
+  //wall2.x = wall.x;
   }
   //tp de wall2 en Y relacionado con wall
   if (wall.y > 666 & wall2.y > 816){
   wall2.y = -75;
-  wall2.x = wall.x;
+  //wall2.x = wall.x;
   }
   //tp de wall2 en Y relacionado con wall3
   if (wall3.y < 75 & wall2.y < -75 ){
   wall2.y = 816;
-  wall2.x = wall3.x;
+  //wall2.x = wall3.x;
   }
   //tp de wall2 en Y relacionado con wall3
   if (wall3.y > 666 & wall2.y > 816){
   wall2.y = -75;
-  wall2.x = wall3.x;
+  //wall2.x = wall3.x;
   }
 
 ////tp de wall1 fuera de pantalla en Y
@@ -224,22 +235,22 @@ if (gameState === 1){
   //tp de wall en Y relacionado con wall2
   if (wall2.y < 75 & wall.y < -75){
    wall.y = 816;
-   wall.x = wall2.x;
+   //wall.x = wall2.x;
   }
   //tp de wall en Y relacionado con wall2
   if (wall2.y > 666 & wall.y > 816){
     wall.y = -75;
-    wall.x = wall2.x;
+    //wall.x = wall2.x;
   }
   //tp de wall en Y relacionado con wall3
   if (wall3.y < 75 & wall.y < -75){
    wall.y = 816;
-   wall.x = wall3.x;
+   //wall.x = wall3.x;
   }
   //tp de wall en Y relacionado con wall3
   if (wall3.y > 666 & wall.y > 816){
    wall.y = -75;
-   wall.x = wall3.x;
+   //wall.x = wall3.x;
   } 
 
 ///tp en X       tp en X       tp en X
@@ -251,22 +262,22 @@ if (gameState === 1){
   //tp de wall3 en X relacionado con wall
   if (wall3.x > 1595 & wall.x > 1445){
   wall3.x = -75;
-  wall3.y = wall.y;
+  //wall3.y = wall.y;
   }
   //tp de wall3 en X relacionado con wall
   if (wall3.x < -75 & wall.x < 75){
   wall3.x = 1595;
-  wall3.y = wall.y;
+  //wall3.y = wall.y;
   }
   //tp de wall3 en X relacionado con wall2
   if (wall3.x > 1595 & wall2.x > 1445){
   wall3.x = -75;
-  wall3.y = wall2.y;
+  //wall3.y = wall2.y;
   }
   //tp de wall3 en X relacionado con wall2
   if (wall3.x < -75 & wall2.x < 75){
   wall3.x = 1595;
-  wall3.y = wall2.y;
+ // wall3.y = wall2.y;
   }
 
 ////tp de wall2 fuera de pantalla en X 
@@ -274,22 +285,22 @@ if (gameState === 1){
   //tp de wall2 en X relacionado con wall
   if (wall2.x > 1595 & wall.x > 1445){
   wall2.x = -75;
-  wall2.y = wall.y;
+  //wall2.y = wall.y;
   }
   //tp de wall2 en X relacionado con wall
   if (wall2.x < -75 & wall.x < 75){
   wall2.x = 1595;
-  wall2.y = wall.y;
+  //wall2.y = wall.y;
   }
   //tp de wall2 en X relacionado con wall3
   if (wall2.x > 1595 & wall3.x > 1445){
   wall2.x = -75;
-  wall2.y = wall3.y;
+  //wall2.y = wall3.y;
   }
   //tp de wall2 en X relacionado con wall3
   if (wall2.x < -75 & wall3.x < 75){
   wall2.x = 1595;
-  wall2.y = wall3.y;
+  //wall2.y = wall3.y;
   }
 
 ////tp de wall fuera de pantalla en X
@@ -297,22 +308,22 @@ if (gameState === 1){
   //tp de wall en X relacionado con wall3
   if (wall.x > 1595 & wall3.x > 1445){
   wall.x = -75;
-  wall.y = wall3.y;
+  //wall.y = wall3.y;
   }
   //tp de wall en X relacionado con wall3
   if (wall.x < -75 & wall3.x < 75){
   wall.x = 1595;
-  wall.y = wall3.y;
+  //wall.y = wall3.y;
   }
   //tp de wall en X relacionado con wall2
   if (wall.x > 1595 & wall2.x > 1445){
   wall.x = -75;
-  wall.y = wall2.y;
+  //wall.y = wall2.y;
   }
   //tp de wall en X relacionado con wall2
   if (wall.x < -75 & wall2.x < 75){
   wall.x = 1595;
-  wall.y = wall2.y;
+  //wall.y = wall2.y;
   }
 
 
@@ -408,14 +419,26 @@ if (wall.y < 816 || wall.y > -75){
  if (keyWentUp(32)){
   wall3.rotation += 90;
  }
+ if (ball.x > 1541 || ball.x < -21 || ball.y > 762 || ball.y < -21) {
+  gameState = 2;
+ }
+ drawSprites();
 } else if (gameState === 2){
   ball.velocityX = 0;
   ball.velocityY = 0;
   ball.x = 400;
   ball.y = 400;
+  wall.x = 600;
+  wall.y = 600;
+  wall2.x = 600;
+  wall2.y = -141;
+  wall3.x = -920;
+  wall3.y = 600;
+  
+  textSize(18)
   text("Game Over", 700, 370);
   text("press R to try again",670 ,390);
-  text("press D to select other gamemode", 620,410);
+  text("press D to select other gamemode", 610,410);
   if (keyWentUp(82)){
     if (simple === 2){
      simple = 1;
@@ -435,8 +458,6 @@ if (wall.y < 816 || wall.y > -75){
   textSize(30);
   text("Hi, select your gamemode", 40, 40);
   score = 0;
-  screen.shapeColor = 110,110,110;
-  //screen.depth = 2;  
   
   if (keyWentUp(49)){
    gameState = .5;
@@ -451,13 +472,13 @@ if (wall.y < 816 || wall.y > -75){
     hard = 1;
   }
 } else if (gameState === .5) {
-  screen.depth = 0;
-  screen.shapeColor = "#323232";
-  
   if (keyWentUp(13)){
     gameState = 1;
+    
   }
+  ellipse(ball.x, ball.y, 25, 25);
+  drawSprites();
 }
- drawSprites();
 
 }
+
